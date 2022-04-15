@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>debouce</title>
+</head>
+
+<body>
+    <h2>deboucne</h2>
+    <input type="text" id="input">
+    <script>
+        function debounce(fn, delay = 200) {
+            let timer = 0
+            return function() {
+                console.log('debounce...')
+                if (timer) {
+                    clearTimeout(timer)
+                }
+                timer = setTimeout(() => {
+                    fn.apply(this, arguments)
+                    timer = 0
+                }, delay);
+
+            }
+        }
+        let test = debounce(() => {
+            console.log('excute!')
+        }, 1000)
+        let inputEl = document.getElementById('input')
+        inputEl.addEventListener('keyup', debounce(() => {
+            console.log(inputEl.value);
+        }, 1000))
+    </script>
+
+    <hr>
+
+    <h2>throttle</h2>
+    <div id="square" draggable="true" style="width: 100px;height: 100px;background-color:orangered;"></div>
+    <script>
+        let throttle = function(fn, delay = 200) {
+            let timer = 0
+            return function() {
+                if (timer) return
+
+                // 箭头函数共享外部 this
+                timer = setTimeout(() => {
+                    // 调用函数时传入 this（本例中 this 即为触发事件的元素）
+                    fn.apply(this, arguments)
+                    timer = 0
+                }, delay);
+            }
+        }
+        let squareEl = document.getElementById('square')
+        squareEl.addEventListener('drag', throttle((e) => {
+            console.log(e.x, e.y);
+        }))
+    </script>
+</body>
+
+</html>
